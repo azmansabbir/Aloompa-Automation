@@ -1,0 +1,4 @@
+feedMappingId,name,quantity,limit,description,saleStartsAt,saleEndsAt,price,status
+ef7f5d82-5528-4bbe-832f-c00c8f8a724b,yr_Testing_tick_3,40,50,test,"7/22/2023, 11:01 AM","7/23/2023, 12:00 PM",5.00,PUBLIC
+9e1dceb3-c636-46b7-bde7-1f01814f981c,ter_ticket_type,50,8,ticket description here,"7/21/2023, 12:00 AM","7/22/2023, 1:04 AM",2.00,PUBLIC
+409d461b-7dce-4479-a44a-b76278cb8d37,Testing_ticket,3,4,Test ticket here,"7/21/2023, 12:00 AM","7/22/2023, 7:00 AM",0.00,PUBLIC

@@ -1,0 +1,15 @@
+{
+    "Project": "Aloompa UI Automation",
+    "Env": "QA1_environment",
+    "Language": "",
+    "elementFinderURL": "https://colorlib.com/etc/regform/colorlib-regform-36/",
+    "FromMailaddress": "udgo.sabbir@gmail.com",
+    "FromAddressPassword": "jwqtedxspnbbdknu",
+    "ToMailAddress": ["sabbir.of@gmail.com"],
+    "TeamsWebhookURL": "https://transportedlabs.webhook.office.com/webhookb2/1af1ca62-123b-4948-9a2f-f84e4cb589e6@fee95589-ad46-417d-9636-8b4078359ad9/IncomingWebhook/f0043790c3734b5a942898bfccc07b0b/a6b92662-3ec5-443a-8d4e-10db06594a3c",
+    "SlackWebhookURL": "https://hooks.slack.com/services/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",
+    "MailServiceProvider": "Gmail",
+    "MailNotification": "yes",
+    "TeamsNotification": "yes",
+    "GithubReportlink": "https://unidevgoQA/github.io/Aloompa_UI_automation/allure-report"
+  }

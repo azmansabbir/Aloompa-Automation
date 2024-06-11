@@ -1,0 +1,50 @@
+{
+        "compilerOptions": {
+            "lib":["es2015","ES6", "dom", "es2018.promise"],
+            "target": "ESNext",
+            "strict": true,
+            "module": "commonjs",
+            "sourceMap": true,
+            "resolveJsonModule": true,
+            "types": [
+                "node"                 
+            ],
+            "baseUrl": ".",
+            "paths": {
+                "@pages/*": [
+                    "pages/loginPage/*",
+                    "pages/SecondPage/*",
+                    "pages/ReservationsPage/*",
+                    "pages/eventdashboardPage/*",
+                    "pages/ManageEventPage/*",
+                    "pages/AttendeeInformationPage/*",
+                    "pages/AccountManagement/*",
+                    "pages/SettingsPage/*",
+                    "pages/TicketingPage/*",
+                    "pages/Design/*",
+                    "pages/Report/*"
+                    
+                ],
+                "@fixtures/*": [
+                    "fixtures/*"
+                ],                
+                "@utils/*": [
+                    "utils/*"
+                ],
+                "@testData/*": [
+                    "testData/*",
+                    "testData/audios/*",
+                    "testData/images/*",
+                    "testData/videos*"
+                    
+                ],
+                "@base-function/*": [
+                    "base-function/*"                   
+                ],
+                "@helper-function/*":[
+                    "helperFunctions/*"
+                ]
+            }
+        }
+    }
+
