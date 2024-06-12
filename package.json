@@ -3,10 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "env:dev": "cross-env test_env=dev npx playwright test",
-    "env:stg": "cross-env test_env=stg npx playwright test",
-    "env:prod": "cross-env test_env=prod npx playwright test",
+  "scripts": {   
     "test": "npx playwright test",
     "allure:generate": "allure generate ./allure-results --clean && allure open ./allure-report",
     "update:Snapshot": "npx playwright test --update-snapshots",
@@ -30,6 +27,7 @@
     "nodemailer": "^6.8.0",
     "tesseract.js": "^2.1.5",
     "ts-node": "10.9.1",
-    "typescript": "4.8.3"
+    "typescript": "4.8.3",
+    "nodejs-nodemailer-outlook": "^1.2.4"
   }
 }
