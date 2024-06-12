@@ -4,7 +4,7 @@
     "USERNAME": "qa-1",
     "PASSWORD": "-wJgw8fLDX",
     "TEAMS_WEBHOOK": "https://transportedlabs.webhook.office.com/webhookb2/1af1ca62-123b-4948-9a2f-f84e4cb589e6@fee95589-ad46-417d-9636-8b4078359ad9/IncomingWebhook/dbccaaa1799743e38ed4d57ba2b562bc/a6b92662-3ec5-443a-8d4e-10db06594a3c",
-    "SLACK_WEBHOOK": "https://hooks.slack.com/services/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",
+    "SLACK_WEBHOOK": "https://hooks.slack.com/services/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",
     "ENVIRONMENT": "Testing",
     "REPORT_LINK": "https://unidevgoqa.github.io/Aloompa_UI_automation/",
     "PROJECT": "Aloompa_UI_Automation"

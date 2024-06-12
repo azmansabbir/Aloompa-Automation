@@ -2,6 +2,8 @@ import axios from "axios";
 const fs = require("fs");
 const path = require("path");
 import * as dotenv from "dotenv";
+var nodeoutlook = require("nodejs-nodemailer-outlook");
+
 dotenv.config();
 // import * as testConfig from "baseConfig.json"
 import * as testConfig from "./baseConfig.json";
@@ -14,6 +16,11 @@ const SLACK_WEBHOOK_URL = ENV.SLACK_WEBHOOK;
 const ENVIRONMENT = ENV.ENVIRONMENT;
 const PROJECT = ENV.PROJECT;
 const REPORT_URL = ENV.REPORT_LINK;
+const FROM_ADDRESS_MAIL = ENV.FROM_ADDRESS_MAIL;
+const FROM_ADDRESS_PASSWORD = ENV.FROM_ADDRESS_PASSWORD;
+const TO_MAIL_ADDRESS = ENV.TO_MAIL_ADDRESS;
+
+
 
 // let WEBHOOK_URL: string;
 // let testData: any;
@@ -120,13 +127,203 @@ async function sendReportToSlack() {
   }
 }
 
+export async function sendReportToTeams() {
+  // Read your test report file
+  const reportPath = path.join(__dirname, "/result.json"); // Update with the correct path
+  const reportContent = fs.readFileSync(reportPath, "utf8");
+  const defaultobject = JSON.parse(reportContent);
+  const passedcount = Number(defaultobject.Passedcount);
+  const failedcount = Number(defaultobject.Failedcount);
+  const Totalcount =
+    Number(defaultobject.Passedcount) + Number(defaultobject.Failedcount);
+  const Passpercentage = ((passedcount / Totalcount) * 100).toFixed(2);
+  const Failpercentage = ((failedcount / Totalcount) * 100).toFixed(2);
+
+  const Textmessage =
+    "Hi Team," +
+    "\n Test Execution For The Project " +
+    PROJECT +
+    " is Conducted in " +
+    ENVIRONMENT +
+    " Environment and its Succesfully Completed." +
+    "\n" +
+    "> ## 🟠 Total Number of Test Cases Executed : " +
+    Totalcount +
+    "\n" +
+    "> ## ✅ Total Number of test cases Passed : " +
+    passedcount +
+    "\n" +
+    "> ## ❌ Total Number of test cases Failed : " +
+    failedcount +
+    "\n" +
+    "> ## 🟢 Test cases Pass Percentage : " +
+    Passpercentage +
+    "\n" +
+    "> ## ⛔ Test cases Fail Percentage : " +
+    Failpercentage +
+    "\n";
+  // return Textmessage;
+
+  // Construct the message
+  const message = {
+    "@type": "MessageCard",
+    "@context": "http://schema.org/extensions",
+    summary: "Test Report",
+    sections: [
+      {
+        activityTitle: PROJECT,
+        text: Textmessage,
+        // Add any relevant details here
+      },
+      {
+        activityTitle: "Execution Time:",
+        activitySubtitle: `${executionTime}`,
+        activityImage: "URL of an image, if needed",
+        // "markdown": true
+      },
+      {
+        activityTitle: "Environment:",
+        text: ENVIRONMENT,
+      },
+    ],
+    potentialAction: [
+      {
+        "@type": "OpenUri",
+        name: "View Report",
+        // Assuming the report is hosted/served at a URL
+        targets: [{ os: "default", uri: REPORT_URL }],
+      },
+    ],
+  };
+
+  // Send the message to Teams
+  try {
+    const response = await axios.post(TEAM_WEBHOOK_URL, message);
+    console.log("Message sent to Teams:", response.data);
+  } catch (error) {
+    console.error("Error sending message to Teams:", error);
+  }
+}
+
+
+async function sendReportToMail() {
+  // Read your test report file
+  const reportPath = path.join(__dirname, "/result.json"); // Update with the correct path
+  const reportContent = fs.readFileSync(reportPath, "utf8");
+  const defaultobject = JSON.parse(reportContent);
+  const passedcount = Number(defaultobject.Passedcount);
+  const failedcount = Number(defaultobject.Failedcount);
+  const Totalcount =
+    Number(defaultobject.Passedcount) + Number(defaultobject.Failedcount);
+  const Passpercentage = ((passedcount / Totalcount) * 100).toFixed(2);
+  const Failpercentage = ((failedcount / Totalcount) * 100).toFixed(2);
+
+
+  const HTMLmessage2 = `
+  <html>
+  <style>
+    /* Your existing styles */
+    .info-item {
+        margin-bottom: 10px;
+    }
+    .info-title {
+        font-weight: bold;
+        display: inline-block;
+        margin-right: 5px;
+        font-size: 22px; /* Increased font size */
+    }
+    /* Style for the rest of the text */
+    .info-content {
+        font-size: 20px; /* You can set a different size for the content */
+    }
+  </style>
+  <body>
+    <h3>Hi Team, <br>Test Execution for the Project ${PROJECT} is conducted in ${ENVIRONMENT} Environment and it's Successfully Completed.<br>Please find below the details for the Test Execution Status.<br></h3>
+    <div class="info-item">
+      <span class="info-title" style="font-weight: bold; font-size: 14px;">🔵Total Number of Test Cases Executed:</span>
+      <span class="info-content" style="font-weight: bold; font-size: 14px;">${Totalcount}</span>
+    </div>
+    <div class="info-item">
+      <span class="info-title" style="font-weight: bold; font-size: 14px;">✅Total Number of Test Cases Passed:</span>
+      <span class="info-content" style="font-weight: bold; font-size: 14px;">${defaultobject.Passedcount}</span>
+    </div>
+    <div class="info-item">
+      <span class="info-title" style="font-weight: bold; font-size: 14px;">❌Total Number of Test Cases Failed:</span>
+      <span class="info-content" style="font-weight: bold; font-size: 14px;">${defaultobject.Failedcount}</span>
+    </div>
+    <div class="info-item">
+      <span class="info-title" style="font-weight: bold; font-size: 14px;">🟢Test Cases Pass Percentage:</span>
+      <span class="info-content" style="font-weight: bold; font-size: 14px;">${Passpercentage}%</span>
+    </div>
+    <div class="info-item">
+      <span class="info-title" style="font-weight: bold; font-size: 14px;">🟠Test Cases Fail Percentage:</span>
+      <span class="info-content" style="font-weight: bold; font-size: 14px;">${Failpercentage}%</span>
+    </div>
+    <div>
+    <span class="info-title" style="font-weight: bold; font-size: 14px;">Environment:</span>
+      <span class="info-content" style="font-size: 14px;">${ENVIRONMENT}</span>
+    </div>
+    <div>
+    <span class="info-title" style="font-weight: bold; font-size: 14px;">Execution Time:</span>
+      <span class="info-content" style="font-size: 14px;">${executionTime}</span>
+    </div>
+    <div>
+      <a href="${REPORT_URL}" target="_blank" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; border-radius: 5px;">View HTML Report</a>
+    </div>
+
+  </body>
+</html>`;
+
+
+
+  const smtpProtocol = mailer.createTransport({
+    service: "GMAIL",
+    auth: {
+      user: FROM_ADDRESS_MAIL,
+      pass: FROM_ADDRESS_PASSWORD,
+    },
+  });
+  var mailoption = {
+    from: FROM_ADDRESS_MAIL,
+    to: TO_MAIL_ADDRESS,
+    subject: PROJECT,
+    html: HTMLmessage2,
+
+    onError: (e: any) => console.log(e),
+    onSuccess: (i: any) => console.log(i),
+  };
+
+
+  return new Promise((resolve, reject) =>
+    smtpProtocol.sendMail(mailoption, function (err: any, response: { message: string; }) {
+      if (err) {
+        console.log(err);
+        reject("Promise Rejected");
+      }
+      console.log("Message Sent To Email With HTML File");
+      smtpProtocol.close();
+      resolve("Promise Resolved");
+    })
+  );
+
+
+
+
+}
+
+
+
+
+
+
 
 async function mailSend() {
   // if (process.env.CI) {
   // Logic specific to CI/CD environment
   await new Promise((resolve) => setTimeout(resolve, 10000));
-  //   await sendReportToTeams();
-    await sendReportToSlack();
+  // await sendReportToTeams();
+  await sendReportToSlack();
+  // await sendReportToMail();
   // }
 }
 

@@ -41,9 +41,15 @@ const config: PlaywrightTestConfig = {
 
 
 
-  reporter: [["html", {
-    open: "never"
-  }], ['./My-Reporter.js']],
+  reporter: [
+    [
+      "html",
+      {
+        open: "never",
+      },
+    ],
+    ["./My-Reporter.js"],
+  ],
 
   globalTeardown: "./mailer.ts",
 
